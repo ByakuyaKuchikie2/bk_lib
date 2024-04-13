@@ -1,0 +1,358 @@
+@name easing
+
+#[
+-- For all easing functions:
+-- T = elapsed time
+-- B = begin
+-- C = change == ending - beginning
+-- D = duration (total time)
+-- A = Amplitude
+-- P = Period
+-- S = idk tbh, it doesn't say
+]#
+
+function number pow(A:number, B:number){
+    return A ^ B
+}
+
+function number linear(T:number, B:number, C:number, D:number){
+  return C * T / D + B
+}
+
+function number inQuad(T:number, B:number, C:number, D:number){
+  T = T / D
+  return C * (T^2) + B
+}
+
+function number outQuad(T:number, B:number, C:number, D:number){
+  T = T / D
+  return -C * T * (T - 2) + B
+}
+
+function number inOutQuad(T:number, B:number, C:number, D:number){
+  T = T / D * 2
+  if(T < 1){
+    return C / 2 * (T^2) + B
+  }else{
+    return -C / 2 * ((T - 1) * (T - 3) - 1) + B
+  }
+}
+
+function number outInQuad(T:number, B:number, C:number, D:number){
+  if(T < D / 2){
+    return outQuad(T * 2, B, C / 2, D)
+  }else{
+    return inQuad((T * 2) - D, B + C / 2, C / 2, D)
+  }
+}
+
+function number inCubic(T:number, B:number, C:number, D:number){
+  T = T / D
+  return C * (T^3) + B
+}
+
+function number outCubic(T:number, B:number, C:number, D:number){
+  T = T / D - 1
+  return C * ((T^3) + 1) + B
+}
+
+function number inOutCubic(T:number, B:number, C:number, D:number){
+  T = T / D * 2
+  if(T < 1){
+    return C / 2 * T * T * T + B
+  }else{
+    T = T - 2
+    return C / 2 * (T * T * T + 2) + B
+  }
+}
+
+function number outInCubic(T:number, B:number, C:number, D:number){
+  if(T < D / 2){
+    return outCubic(T * 2, B, C / 2, D)
+  }else{
+    return inCubic((T * 2) - D, B + C / 2, C / 2, D)
+  }
+}
+
+function number inQuart(T:number, B:number, C:number, D:number){
+    T = T / D
+    return C * (T^4) + B
+}
+
+function number outQuart(T:number, B:number, C:number, D:number){
+    T = T / D - 1
+    return -C * ((T^4) - 1) + B
+}
+
+function number inOutQuart(T:number, B:number, C:number, D:number){
+    T = T / D * 2
+    if(T < 1){
+        return C / 2 * (T^4) + B
+    }else{
+        T = T - 2
+        return -D / 2 * ((T^4) - 2) + B
+    }
+}
+function number outInQuart(T:number, B:number, C:number, D:number){
+    if(T < D / 2){
+        return outQuart(T*2, B, C / 2, D)
+    }else{
+        return inQuart((T*2) - D, B + C / 2, C / 2, D)
+    }
+}
+
+function number inQuint(T:number, B:number, C:number, D:number){
+    T = T / D
+    return C * (T^5) + B
+}
+
+function number outQuint(T:number, B:number, C:number, D:number){
+    T = T / D - 1
+    return C * ((T^5) + 1) + B
+}
+
+function number inOutQuint(T:number, B:number, C:number, D:number){
+    T = T / D * 2
+    if(T < 1){
+        return C / 2 * (T^5) + B
+    }else{
+        T = T - 2
+        return C / 2 * ((T^5) + 2) + B
+    }
+}
+function number outInQuint(T:number, B:number, C:number, D:number){
+    if(T < D / 2){
+        return outQuint(T * 2, B, C / 2, D)
+    }else{
+        return inQuint((T * 2) - D, B + C / 2, C / 2, D)
+    }
+}
+
+function number inSine(T:number, B:number, C:number, D:number){
+    return -C * cosr(T / D * (_PI / 2)) + C + B
+}
+
+function number outSine(T:number, B:number, C:number, D:number){
+    return C * sinr(T / D * (_PI / 2)) + C + B
+}
+
+function number inOutSine(T:number, B:number, C:number, D:number){
+    return -C / 2 * (cosr(_PI * T / D) - 1) + B
+}
+
+function number outInSine(T:number, B:number, C:number, D:number){
+    if(T < D / 2){
+        return outSine(T * 2, B, C / 2, D)
+    }else{
+        return inSine((T * 2) - D, B + C / 2,C / 2, D)
+    }
+}
+
+function number inExpo(T:number, B:number, C:number, D:number){
+    if(T == 0){
+        return B
+    }else{
+        return C * pow(2, 10 * (T / D - 1)) + B - C * 0.001
+    }
+}
+
+function number outExpo(T:number, B:number, C:number, D:number){
+    if(T == D){
+        return B + C
+    }else{
+        return C * 1.001 * (-pow(2, -10 * T / D) + 1) + B
+    }
+}
+
+function number inOutExpo(T:number, B:number, C:number, D:number){
+    if(T == 0){return B}
+    if(T == D){return B + C}
+    T = T / D * 2
+    if(T < 1){
+        return C / 2 * pow(2, 10 * (T - 1)) + B - C * 0.0005
+    }else{
+        T = T - 1
+        return C / 2 * 1.0005 * (-pow(2, -10 * T) + 2) + B
+    }
+}
+
+function number outInExpo(T:number, B:number, C:number, D:number){
+    if(T < D / 2){
+        return outExpo(T * 2, B, C / 2, D)
+    }else{
+        return inExpo((T * 2) - D, B + C / 2, C / 2, D)
+    }
+}
+
+function number inCirc(T:number, B:number, C:number, D:number){
+    T = T / D
+    return (-C * (sqrt(1 - pow(T, 2)) - 1) + B)
+}
+
+function number outCirc(T:number, B:number, C:number, D:number){
+    T = T / D - 1
+    return (C * sqrt(1 - pow(T, 2)) + B)
+}
+
+function number inOutCirc(T:number, B:number, C:number, D:number){
+    T = T / D * 2
+    if(T < 1){
+        return -C / 2 * (sqrt(1 - T * T) - 1) + B
+    }else{
+        T = T - 2
+        return C / 2 * (sqrt(1 - T * T) + 1) + B
+    }
+}
+
+function number outInCirc(T:number, B:number, C:number, D:number){
+    if(T < D / 2){
+        return outCirc(T * 2, B, C / 2, D)
+    }else{
+        return inCirc((T * 2) - D, B + C / 2, C / 2, D)
+    }
+}
+
+function number inElastic(T:number, B:number, C:number, D:number, A:number, P:number){
+    if(T == 0){return B}
+    
+    T = T / D
+    
+    if(T == 1){return B + C}
+    
+    if(!P){P = D * 0.3}
+    
+    local S = 0
+    
+    if(!A || A < abs(C)){
+        A = C
+        S = P / 4
+    }else{
+        S = P / (2 * _PI) * asinr(C/A)
+    }
+    
+    T = T - 1
+    
+    return -(A * pow(2, 10 * T) * sinr((T * D - S) * (2 * _PI) / P)) + B
+}
+
+function number outElastic(T:number, B:number, C:number, D:number, A:number, P:number){
+    if(T == 0){return B}
+    
+    T = T / D
+    
+    if(T == 1){return B + C}
+    
+    if(!P){P = D * 0.3}
+    
+    local S = 0
+    
+    if(!A || A < abs(C)){
+        A = C
+        S = P / 4
+    }else{
+        S = P / (2 * _PI) * asinr(C/A)
+    }
+    
+    return A * pow(2, -10 * T) * sinr((T * D - S) * (2 * _PI) / P) + C + B
+}
+
+function number inOutElastic(T:number, B:number, C:number, D:number, A:number, P:number){
+    if(T == 0){return B}
+    
+    T = T / D * 2
+    
+    if(T == 2){return B + C}
+    
+    local S = 0
+    
+    if(!A || A < abs(C)){
+        A = C
+        S = P / 4
+    }else{
+        S = P / (2 * _PI) * asinr(C / A)
+    }
+    
+    if(T < 1){
+        T = T - 1
+        return -0.5 * (A * pow(2, 10 * T) * sinr((T * D - S) * (2 * _PI) / P)) + B
+    }else{
+        T = T - 1
+        return A * pow(2, -10 * T) * sinr((T * D - S) * (2 * _PI) / P) * 0.5 + C + B
+    }
+}
+
+function number outInElastic(T:number, B:number, C:number, D:number, A:number, P:number){
+    if(T < D / 2){
+        return outElastic(T * 2, B, C / 2, D, A, P)
+    }else{
+        return inElastic((T * 2) - D, B + C / 2, C / 2, D, A, P)
+    }
+}
+
+function number inBack(T:number, B:number, C:number, D:number, S:number){
+    if(!S){S = 1.70158}
+    T = T / D
+    return C * T * T * ((S + 1) * T - S) + B
+}
+
+function number outBack(T:number, B:number, C:number, D:number, S:number){
+    if(!S){S = 1.70158}
+    T = T / D - 1
+    return C * (T * T * ((S + 1) * T + S) + 1) + B
+}
+
+function number inOutBack(T:number, B:number, C:number, D:number, S:number){
+    if(!S){S = 1.70158}
+    S = S * 1.525
+    T = T / D * 2
+    if(T < 1){
+        return C / 2 * (T * T * ((S + 1) * T - S)) + B
+    }else{
+        T = T - 2
+        return C / 2 * (T * T * ((S + 1) * T + S) + 2) + B
+    }
+}
+
+function number outInBack(T:number, B:number, C:number, D:number, S:number){
+    if(T < D / 2){
+        return outBack(T * 2, B, C / 2, D, S)
+    }else{
+        return inBack((T * 2) - D, B + C / 2, C / 2, D, S)
+    }
+}
+
+function number outBounce(T:number, B:number, C:number, D:number){
+    T = T / D
+    if(T < 1 / 2.75){
+        return C * (7.5625 * T * T) + B
+    }elseif(T < 2 / 2.75){
+        T = T - (1.5 / 2.75)
+        return C * (7.56254 * T * T + 0.75) + B
+    }elseif(T < 2.5 / 2.75){
+        T = T - (2.25 / 2.75)
+        return C * (7.5625 * T * T + 0.9375) + B
+    }else{
+        T = T - (2.625 / 2.75)
+        return C * (7.5625 * T * T + 0.984375) + B
+    }
+}
+
+function number inBounce(T:number, B:number, C:number, D:number){
+    return C - outBounce(D - T, 0, C, D) + B
+}
+
+function number inOutBounce(T:number, B:number, C:number, D:number){
+    if(T < D / 2){
+        return inBounce(T * 2, 0, C, D) * 0.5 + B
+    }else{
+        return outBounce(T * 2 - D, 0, C, D) * 0.5 + C * 0.5 + B
+    }
+}
+
+function number outInBounce(T:number, B:number, C:number, D:number){
+    if(T < D / 2){
+        return outBounce(T * 2, B, C / 2, D)
+    }else{
+        return inBounce((T * 2) - D, B + C /2, C / 2, D)
+    }
+}

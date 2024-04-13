@@ -1,0 +1,148 @@
+
+#Be sure to place this outside of your 'if(first())' else it won't work
+
+
+@persist HASH:string EVENT_QUEUE:table EVENT_ID:number
+
+if ( first() || dupefinished() )
+{
+    
+    #include "bk_lib/string"
+    
+    EVENT_ID = 0
+    EVENT_QUEUE = table()
+    HASH = hashNoComments():toString()
+    
+}
+
+function number bEventClk() 
+{
+    
+    return dsClk() && dsClkName():startsWith( HASH + ":event:" )
+    
+}
+
+function number bEventClk( Event:string ) 
+{
+    
+    return dsClk( HASH + ":event:" + Event )
+    
+}
+
+function string bEventClkName() 
+{
+    
+    return dsClkName():sub( ( HASH + ":event:" ):length() + 1, dsClkName():length() )
+    
+}
+
+function void bEventPush( Event:string, Time:number, Payload:table )
+{
+    
+    if ( Time > 0 )
+    {
+        
+        local Timer = table(
+            "event" = Event,
+            "payload" = Payload
+        )
+        
+        
+        local TimerID = HASH + ":event:timer-" + EVENT_ID
+        EVENT_ID++
+        EVENT_QUEUE[ TimerID, table ] = Timer
+        
+        timer( TimerID, Time )
+        
+    }
+    else
+    {
+        
+        dsSendDirect( HASH + ":event:" + Event, entity(), Payload )
+        
+    }
+    
+}
+
+function void bEventPush( Event:string, Time:number )
+{
+    
+    if ( Time > 0 )
+    {
+        
+        local Timer = table(
+            "event" = Event
+        )
+        
+        
+        local TimerID = HASH + ":event:timer-" + EVENT_ID
+        EVENT_ID++
+        EVENT_QUEUE[ TimerID, table ] = Timer
+        
+        timer( TimerID, Time )
+        
+    }
+    else
+    {
+        
+        dsSendDirect( HASH + ":event:" + Event, entity(), 0 )
+        
+    }
+    
+}
+
+function void bEventPush( Event:string, Payload:table )
+{
+    
+    bEventPush( Event, 0, Payload )
+    
+}
+
+function void bEventPush( Event:string )
+{
+    
+    bEventPush( Event, 0 )
+    
+}
+
+function table bEventGetPayload()
+{
+    
+    if( !bEventClk() )
+    {
+        
+        return table()
+        
+    }
+    
+    return dsGetTable()
+    
+}
+
+if ( clkName():startsWith( HASH + ":event:" ) )
+{
+    
+    local TimerID = clkName()
+    
+    if( EVENT_QUEUE:exists( TimerID ) )
+    {
+        
+        local EVENT = EVENT_QUEUE[ TimerID, table ]
+        EVENT_QUEUE:remove( TimerID )
+        
+        if( EVENT:exists( "payload" ) )
+        {
+            
+            bEventPush( EVENT[ "event", string ], 0, EVENT[ "payload", table ] )
+            
+        }
+        else
+        {
+            
+            bEventPush( EVENT[ "event", string ], 0 )
+            
+        }
+        
+    }
+    
+}

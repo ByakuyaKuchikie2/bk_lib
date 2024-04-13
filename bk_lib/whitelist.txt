@@ -1,0 +1,95 @@
+@name whitelist
+@persist Whitelist:array FancyWhitelistTag:table
+
+if( first() )
+{
+    
+    FancyWhitelistTag = 
+        table(
+            "TagColor" = vec(0,150,255),
+            "Tag" = "[BK's Whitelist] ",
+            "TextColor" = vec(138,43,226)
+        )
+        
+    Whitelist = array()
+    
+    function number whitelistIncludesEntity( Ent:entity )
+    {
+        
+        foreach( _:number, EntityInWhitelist:entity = Whitelist )
+        {
+            
+            if( Ent == EntityInWhitelist )
+            {
+                
+                return 1
+                
+            }
+            
+        }
+        
+        return 0
+        
+    }
+    
+    function number removeEntityFromWhitelist( Ent:entity )
+    {
+        
+        foreach( ID:number, EntityInWhitelist:entity = Whitelist )
+        {
+            
+            if( Ent == EntityInWhitelist )
+            {
+                
+                Whitelist:remove( ID )
+                
+                return 1
+                
+            }
+            
+        }
+        
+        printColor( 
+            FancyWhitelistTag["TagColor",vector], 
+            FancyWhitelistTag["Tag",string],
+            FancyWhitelistTag["TextColor",vector],
+            "Could not add entity. Entity does not exist."
+        )
+        
+        return 0
+        
+    }
+    
+    function number addEntityToWhitelist( Ent:entity )
+    {
+        
+        foreach( _:number, EntityInWhitelist:entity = Whitelist )
+        {
+            
+            if( Ent == EntityInWhitelist )
+            {
+        
+                printColor( 
+                    FancyWhitelistTag["TagColor",vector], 
+                    FancyWhitelistTag["Tag",string],
+                    FancyWhitelistTag["TextColor",vector],
+                    "Could not add entity. Entity already in whitelist."
+                )
+                
+                return 0
+                
+            }
+            
+        }
+        
+        Whitelist:pushEntity( Ent )
+        
+        return 1
+        
+    }
+    
+}
+
+################
+## Made By BK ##
+################

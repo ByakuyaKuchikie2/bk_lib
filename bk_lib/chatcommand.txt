@@ -1,0 +1,95 @@
+@persist Chat_Events:table Chat_Prefixes:string
+#include "bk_lib/string"
+
+if(first()){
+    
+    Chat_Events = table()
+    
+    Chat_Prefixes = "!" #Default prefix
+
+}
+    
+function void addChatCommand(Name:string,Callback:function){
+    
+    Name = Name:lower()
+    
+    if(Chat_Events:exists(Name)){
+        
+        printColor(vec(255,0,0), "[ERROR] ", vec(255,255,255), "The command ", vec(255,255,0), format("'%s'",Name), vec(255,255,255), " already exists!")
+        return
+        
+    }
+    
+    Chat_Events[Name,function] = Callback
+    
+}
+    
+function void removeChatCommand(Name:string){
+    
+    Name = Name:lower()
+    
+    if(Chat_Events:exists(Name)){
+        
+        Chat_Events:removeFunction(Name)
+        return
+        
+    }
+    
+    printColor(vec(255,0,0), "[ERROR] ", vec(255,255,255), "The command ", vec(255,255,0), format("'%s'",Name), vec(255,255,255), " already exists!")
+    
+}
+
+function void addChatPrefix(Prefix:string){
+    
+    if(Chat_Prefixes:find(Prefix)){
+        
+        printColor(vec(255,0,0), "[ERROR] ", vec(255,255,255), "The prefix ", vec(255,255,0), format("'%s'",Prefix), vec(255,255,255), " does not exists!")
+        return
+        
+    }
+    
+    Chat_Prefixes += Prefix
+    
+}
+
+function void removeChatPrefix(Prefix:string){
+    
+    if(Chat_Prefixes:find(Prefix)){
+        
+        Chat_Prefixes = Chat_Prefixes:replace(Prefix,"")
+        return
+        
+    }
+    
+    printColor(vec(255,0,0), "[ERROR] ", vec(255,255,255), "The prefix ", vec(255,255,0), format("'%s'",Prefix), vec(255,255,255), " does not exists!")
+    
+}
+
+event chat(Player:entity, Message:string, _:number) {
+    
+    foreach(ID:string, Func:function=Chat_Events){
+        
+        if(Chat_Prefixes:find(Message:sub(1,1))){
+            
+            local NewMessage = Message:sub(2)
+            local Arguments = NewMessage:explode(" ")
+            
+            if(NewMessage:startsWith(ID)){
+                
+                try{
+                    
+                    Func(Player, NewMessage, Arguments)
+                    
+                }catch(Err:string){
+                    
+                    printColor(vec(255,0,0), "[ERROR] ", vec(255,255,255), "The command ", vec(255,255,0), format("'%s'",ID), vec(255,255,255), " errored with message: ", vec(255,150,100), Err)
+                    
+                }
+                
+            }
+            
+        }
+        
+    }
+    
+}

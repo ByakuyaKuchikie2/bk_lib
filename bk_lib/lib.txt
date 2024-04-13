@@ -1,0 +1,334 @@
+function number lerpN(Rate:number,From:number,To:number){
+    
+    return From + Rate * (To - From)
+    
+}
+
+function vector lerpV(Rate:number,From:vector,To:vector){
+    
+    return From + Rate * (To - From)
+    
+}
+
+function angle lerpA(Rate:number,From:angle,To:angle){
+    
+    return slerp(quat(From),quat(To),Rate):toAngle()
+    
+}
+
+function vector predictPath(T:number, V0:vector, X0:vector, G:vector){
+    return G * (0.5 * T * T) + V0 * T + X0
+}
+
+function vector specDir(Normal:vector,Vel:vector){ #Ricochet function
+    local N = Normal
+    local D = Vel
+    local F = D-2*(D*N)*N
+    return F
+}
+
+function void makeParticle(Mat:string, Col:vector, Pitch:number, StartAlpha:number, EndAlpha:number, StartSize:number, EndSize:number, Duration:number, Bounce:number, Gravity:vector, Collisions:number, StartPos:vector, Velocity:vector){
+    particleSetMaterial(Mat)
+    particleSetColor(Col)
+    particleSetPitch(Pitch)
+    particleSetStartAlpha(StartAlpha)
+    particleSetEndAlpha(EndAlpha)
+    particleSetStartSize(StartSize)
+    particleSetEndSize(EndSize)
+    particleSetDuration(Duration)
+    particleBounce(Bounce)
+    particleGravity(Gravity)
+    particleCollision(Collisions)
+    
+    particleSetPosition(StartPos)
+    particleSetVelocity(Velocity)
+    particleCreate()
+} 
+
+function void makeParticleSimple(Mat:string, Col:vector, StartAlpha:number, StartSize:number, Duration:number, StartPos:vector, Velocity:vector){
+    
+    particleSetMaterial(Mat)
+    particleSetColor(Col)
+    particleSetPitch(0)
+    particleSetStartAlpha(StartAlpha)
+    particleSetEndAlpha(0)
+    particleSetStartSize(StartSize)
+    particleSetEndSize(0)
+    particleSetDuration(Duration)
+    particleBounce(0)
+    particleGravity(vec())
+    particleCollision(0)
+    
+    particleSetPosition(StartPos)
+    particleSetVelocity(Velocity)
+    particleCreate()
+} 
+
+function number array:contains(Number:number){
+    
+    local Lookup = This:clone()
+    
+    for(I=1,This:count()){
+        
+        local ValueInLookup = Lookup[I,number]
+        
+        if(Number == ValueInLookup){return 1}
+        
+    }
+    
+    return 0
+    
+}
+
+function number array:contains(String:string){
+    
+    local Lookup = This:clone()
+    
+    for(I=1,This:count()){
+        
+        local ValueInLookup = Lookup[I,string]
+        
+        if(String == ValueInLookup){return 1}
+        
+    }
+    
+    return 0
+    
+}
+
+function number array:contains(Vector:vector){
+    
+    local Lookup = This:clone()
+    
+    for(I=1,This:count()){
+        
+        local ValueInLookup = Lookup[I,vector]
+        
+        if(Vector == ValueInLookup){return 1}
+        
+    }
+    
+    return 0
+    
+}
+
+function number array:contains(Vector2:vector2){
+    
+    local Lookup = This:clone()
+    
+    for(I=1,This:count()){
+        
+        local ValueInLookup = Lookup[I,vector2]
+        
+        if(Vector2 == ValueInLookup){return 1}
+        
+    }
+    
+    return 0
+    
+}
+
+function number array:contains(Vector4:vector4){
+    
+    local Lookup = This:clone()
+    
+    for(I=1,This:count()){
+        
+        local ValueInLookup = Lookup[I,vector4]
+        
+        if(Vector4 == ValueInLookup){return 1}
+        
+    }
+    
+    return 0
+    
+}
+
+function number array:contains(Angle:angle){
+    
+    local Lookup = This:clone()
+    
+    for(I=1,This:count()){
+        
+        local ValueInLookup = Lookup[I,angle]
+        
+        if(Angle == ValueInLookup){return 1}
+        
+    }
+    
+    return 0
+    
+}
+
+function number array:contains(Quaternion:quaternion){
+    
+    local Lookup = This:clone()
+    
+    for(I=1,This:count()){
+        
+        local ValueInLookup = Lookup[I,quaternion]
+        
+        if(Quaternion == ValueInLookup){return 1}
+        
+    }
+    
+    return 0
+    
+}
+
+function number array:contains(Entity:entity){
+    
+    local Lookup = This:clone()
+    
+    for(I=1,This:count()){
+        
+        local ValueInLookup = Lookup[I,entity]
+        
+        if(Entity == ValueInLookup){return 1}
+        
+    }
+    
+    return 0
+    
+}
+
+######################
+
+function number table:contains(Number:number){
+    
+    local Lookup = This:clone()
+    
+    for(I=1,This:count()){
+        
+        local ValueInLookup = Lookup[I,number]
+        
+        if(Number == ValueInLookup){return 1}
+        
+    }
+    
+    return 0
+    
+}
+
+function number table:contains(String:string){
+    
+    local Lookup = This:clone()
+    
+    for(I=1,This:count()){
+        
+        local ValueInLookup = Lookup[I,string]
+        
+        if(String == ValueInLookup){return 1}
+        
+    }
+    
+    return 0
+    
+}
+
+function number table:contains(Vector:vector){
+    
+    local Lookup = This:clone()
+    
+    for(I=1,This:count()){
+        
+        local ValueInLookup = Lookup[I,vector]
+        
+        if(Vector == ValueInLookup){return 1}
+        
+    }
+    
+    return 0
+    
+}
+
+function number table:contains(Vector2:vector2){
+    
+    local Lookup = This:clone()
+    
+    for(I=1,This:count()){
+        
+        local ValueInLookup = Lookup[I,vector2]
+        
+        if(Vector2 == ValueInLookup){return 1}
+        
+    }
+    
+    return 0
+    
+}
+
+function number table:contains(Vector4:vector4){
+    
+    local Lookup = This:clone()
+    
+    for(I=1,This:count()){
+        
+        local ValueInLookup = Lookup[I,vector4]
+        
+        if(Vector4 == ValueInLookup){return 1}
+        
+    }
+    
+    return 0
+    
+}
+
+function number table:contains(Angle:angle){
+    
+    local Lookup = This:clone()
+    
+    for(I=1,This:count()){
+        
+        local ValueInLookup = Lookup[I,angle]
+        
+        if(Angle == ValueInLookup){return 1}
+        
+    }
+    
+    return 0
+    
+}
+
+function number table:contains(Quaternion:quaternion){
+    
+    local Lookup = This:clone()
+    
+    for(I=1,This:count()){
+        
+        local ValueInLookup = Lookup[I,quaternion]
+        
+        if(Quaternion == ValueInLookup){return 1}
+        
+    }
+    
+    return 0
+    
+}
+
+function number table:contains(Entity:entity){
+    
+    local Lookup = This:clone()
+    
+    for(I=1,This:count()){
+        
+        local ValueInLookup = Lookup[I,entity]
+        
+        if(Entity == ValueInLookup){return 1}
+        
+    }
+    
+    return 0
+    
+}
+
+function number map(Value:number,Input_min:number,Input_max:number,Output_min:number,Output_max:number){
+        
+    local Input_range = Input_max - Input_min
+    local Output_range = Output_max - Output_min
+    
+    local Mapped_Value = ((Value - Input_min) / Input_range) * Output_range + Output_min
+    
+    return Mapped_Value
+    
+}

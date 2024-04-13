@@ -1,0 +1,9 @@
+#ifdef entity:setModelScale(number)
+    function void entity:changeScaleUnits(Scale:number){
+        This:setModelScale(Scale)
+    }
+    
+    function void holoChangeScaleUnits(Index:number, Scale:number){
+        holoEntity(Index):changeScaleUnits(Scale)
+    }
+#endif

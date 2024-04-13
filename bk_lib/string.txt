@@ -1,0 +1,22 @@
+# string library
+
+#ifndef string:startsWith(string) 
+
+    function number string:startsWith( String:string )
+    {
+        
+        return This:left( String:length() ) == String
+        
+    }
+#endif
+
+#ifndef string:endsWith(string) 
+
+    function number string:endsWith( String:string )
+    {
+        
+        return This:right( String:length() ) == String
+        
+    }
+
+#endif
